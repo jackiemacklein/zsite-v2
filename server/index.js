@@ -1,3 +1,4 @@
+require("ignore-styles");
 require("ignore-loader");
 
 require("@babel/register")({

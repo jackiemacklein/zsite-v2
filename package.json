@@ -18,7 +18,15 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "serialize-javascript": "^4.0.0",
-    "styled-components": "^5.1.1"
+    "styled-components": "^5.1.1",
+    "babel-plugin-file-loader": "^2.0.0",
+    "babel-plugin-inline-import-data-uri": "^1.0.1",
+    "babel-plugin-styled-components": "^1.10.7",
+    "css-loader": "^3.6.0",
+    "file-loader": "^6.0.0",
+    "ignore-loader": "^0.1.2",
+    "ignore-styles": "^5.0.1",
+    "postcss-loader": "^3.0.0"
   },
   "scripts": {
     "start": "node server/index.js",
@@ -43,14 +51,5 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "babel-plugin-file-loader": "^2.0.0",
-    "babel-plugin-inline-import-data-uri": "^1.0.1",
-    "babel-plugin-styled-components": "^1.10.7",
-    "css-loader": "^3.6.0",
-    "file-loader": "^6.0.0",
-    "ignore-loader": "^0.1.2",
-    "ignore-styles": "^5.0.1",
-    "postcss-loader": "^3.0.0"
-  }
+  "devDependencies": {}
 }
