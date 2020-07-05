@@ -21,33 +21,27 @@ import App from "../src/App";
 import routes from "../src/routes";
 
 /* express config */
-const PORT = 8000;
+const PORT = 80;
 const app = express();
 
 app.use(cors());
-app.use(
-  "/static",
-  express.static(path.resolve(__dirname, "..", "build/static"))
-);
+app.use("/static", express.static(path.resolve(__dirname, "..", "build/static")));
 
 app.get("*", (req, res, next) => {
-  const activeRoute = routes.find((route) => matchPath(req.url, route));
+  const activeRoute = routes.find(route => matchPath(req.url, route));
   const sheet = new ServerStyleSheet();
 
-  const requestInitialData =
-    activeRoute && activeRoute.requestInitialData
-      ? activeRoute.requestInitialData()
-      : [];
+  const requestInitialData = activeRoute && activeRoute.requestInitialData ? activeRoute.requestInitialData() : [];
 
   Promise.resolve(requestInitialData)
-    .then((initialData) => {
+    .then(initialData => {
       const context = { initialData, statusCode: res.statusCode };
       const markup = renderToString(
         <StaticRouter location={req.url} context={context}>
           <StyleSheetManager sheet={sheet.instance}>
             <App initialData={initialData} />
           </StyleSheetManager>
-        </StaticRouter>
+        </StaticRouter>,
       );
 
       fs.readFile(path.resolve("./build/index.html"), "utf-8", (err, data) => {
@@ -59,7 +53,7 @@ app.get("*", (req, res, next) => {
             meta: renderHead(activeRoute, initialData),
             initialData,
             sheet: renderToString(sheet.getStyleElement()),
-          })
+          }),
         );
       });
 
@@ -78,24 +72,14 @@ app.get("*", (req, res, next) => {
     .catch(next);
 });
 
-const injectHTML = (
-  data,
-  { markup, meta, link, scripts, initialData, sheet }
-) => {
+const injectHTML = (data, { markup, meta, link, scripts, initialData, sheet }) => {
   if (meta) data = data.replace("</head>", `${meta}</head>`);
   if (link) data = data.replace("</head>", `${link}</head>`);
   if (sheet) data = data.replace("</head>", `${sheet}</head>`);
-  if (initialData)
-    data = data.replace(
-      "</head>",
-      `<script>window.initialData__ = ${serialize(initialData)}</script></head>`
-    );
+  if (initialData) data = data.replace("</head>", `<script>window.initialData__ = ${serialize(initialData)}</script></head>`);
   if (scripts) data = data.replace("</body>", scripts.join("") + "</body>");
 
-  data = data.replace(
-    '<div id="root"></div>',
-    `<div id="root">${markup}</div>`
-  );
+  data = data.replace('<div id="root"></div>', `<div id="root">${markup}</div>`);
   return data;
 };
 
